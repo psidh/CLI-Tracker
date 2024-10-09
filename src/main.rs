@@ -1,17 +1,19 @@
 mod tasks;
+mod view;
+
 use chrono::NaiveDate;
 use std::io::{self, Write};
 use tasks::create::Task;
+use view::view::{view_all_tasks, view_latest_tasks};
 
 fn main() {
     println!("Welcome to CLI TASK Tracker");
-
-    let mut tasks: Vec<Task> = Vec::new();
 
     loop {
         println!();
         println!("Enter 1 to create a task");
         println!("Enter 2 to view all tasks");
+        println!("Enter 3 to view the top 5 latest tasks");
         println!("Enter 0 to exit");
         print!("Your choice: ");
         io::stdout().flush().expect("Failed to flush stdout");
@@ -92,22 +94,18 @@ fn main() {
                     description.trim().to_string(),
                     date,
                 );
-                task.write_to_file();
-                tasks.push(task);
+                task.write_to_file(); // Write task to db/tasks.txt
             }
             2 => {
                 println!("View all tasks:");
-                if tasks.is_empty() {
-                    println!("No tasks available.");
-                } else {
-                    for task in &tasks {
-                        task.display();
-                        println!("------------------");
-                    }
-                }
+                view_all_tasks("db/tasks.txt"); // Display all tasks
+            }
+            3 => {
+                println!("View the top 5 latest tasks:");
+                view_latest_tasks("db/tasks.txt"); // Display top 5 latest tasks
             }
             _ => {
-                println!("Invalid choice. Please enter 1, 2, or 0.");
+                println!("Invalid choice. Please enter 1, 2, 3, or 0.");
             }
         }
     }

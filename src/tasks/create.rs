@@ -5,10 +5,10 @@ use std::{
 };
 
 pub struct Task {
-    id: i32,
-    title: String,
-    description: String,
-    date: NaiveDate,
+    pub id: i32,
+    pub title: String,
+    pub description: String,
+    pub date: NaiveDate,
 }
 
 impl Task {
@@ -22,12 +22,13 @@ impl Task {
     }
 
     pub fn display(&self) {
-        println!("Task created successfully");
         println!("Task ID: {}", self.id);
         println!("Title: {}", self.title);
         println!("Description: {}", self.description);
         println!("Date: {}", self.date);
     }
+
+    // Write task to file
     pub fn write_to_file(&self) {
         let timestamp = Utc::now().format("%Y-%m-%d %H:%M:%S").to_string();
         let file_path = "db/tasks.txt";
